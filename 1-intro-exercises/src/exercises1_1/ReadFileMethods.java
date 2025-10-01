@@ -1,7 +1,9 @@
 package exercises1_1;
 
 
+import ods.ArrayQueue;
 import ods.ChainedHashTable;
+import ods.Factory;
 import ods.USet;
 
 import java.io.*;
@@ -104,7 +106,7 @@ public class ReadFileMethods {
      *Read the input one line at a time and write each line to the output if it is not a duplicate of some
      * previous input line. Take special care so that a file with a lot of duplicate lines does not use more
      * memory than what is required for the number of unique lines.
-     * -
+     * - Chained Hashtable has O(1) for finding and O(1) add and remove
      * */
     public void ex4_writeDistinct() {
 
@@ -112,7 +114,7 @@ public class ReadFileMethods {
         try (BufferedReader fileReader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = fileReader.readLine()) != null) {
-                // .add returns true if line is in set otherwise returns false.
+                // .add returns true if line is not in set so can be added, false if it is already in the set
 //                  Takes O(1)
                 if(wordSet.add(line))
                     System.out.println(line);
@@ -128,7 +130,6 @@ public class ReadFileMethods {
      * this line before. (The end result is that you remove the first occurrence of each line.)
      * Take special care so that a file with a lot of duplicate lines does not use more memory than what
      * is required for the number of unique lines.
-     * -
      * */
     public void ex5_writeDistinct() {
 
@@ -136,17 +137,87 @@ public class ReadFileMethods {
         try (BufferedReader fileReader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = fileReader.readLine()) != null) {
-                if(wordSet.add(line))
+                if(!wordSet.add(line))
                     System.out.println(line);
             }
         } catch (IOException e) {
             System.out.println("File not found.");
         }
+    }
+    /**
+    * Read the entire input one line at a time. Then output all lines sorted by length, with the shortest lines
+     * first. In the case where two lines have the same length, resolve their order using the usual ``sorted
+     * order.'' Duplicate lines should be printed only once.
+     * ex6
+     * - create a priority queue aKA heap by length
+     * - in each member of the queue order by a-z for string and 0-9 for ints
+     *  - sub queue is also a heap! both are heaps???
+     * */
+    /**
+     * Do the same as the previous question except that duplicate lines should be printed the same number of
+     * times that they appear in the input.
+     * ex7
+     * */
+    /**
+     * Read the entire input one line at a time and then output the even numbered lines (starting with the
+     * first line, line 0) followed by the odd-numbered lines.
+     *
+     * - two queues: one even one odd.
+     * - output all from even then all from odd.
+     */
+    public void ex8_writeEvenOdds(){
 
+        Queue<String> evenLines = new ArrayQueue<>(String.class);
+        Queue<String> oddLines = new ArrayQueue<>(String.class);
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int lineCount = 0;
+            while ((line = fileReader.readLine()) != null) {
+                if(lineCount % 2 == 0)
+                    evenLines.add(line);
+                else
+                    oddLines.add(line);
+                lineCount++;
+            }
+            String wLine;
+            while((wLine = evenLines.poll()) != null){
+                System.out.println(wLine);
+            }
+//            Poll returns null if there are no more elements - otherwise it returns a value.
+            while((wLine = oddLines.poll()) != null){
+                System.out.println(wLine);
+            }
+
+        } catch (IOException e) {
+            System.out.println("File not found.");
+        }
+    }
+    /**
+     * Read the entire input one line at a time and randomly permute the lines before outputting them. To be
+     * clear: You should not modify the contents of any line. Instead, the same collection of lines should be
+     * printed, but in a random order.
+     * - Fisher-Yates Shuffle AKA Knuth Shuffle
+     * */
+    public void ex9_randomPrinting(){
+        List<String> myList = new ArrayList<>();
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(filePath))) {
+
+            String line;
+            while ((line = fileReader.readLine()) != null) {
+                myList.add(line);
+            }
+            Collections.shuffle(myList);
+            myList.forEach(System.out::println);
+
+        } catch (IOException e) {
+            System.out.println("File not found.");
+        }
+        }
     }
 
 
-}
+
+
 
 
 
