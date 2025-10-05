@@ -15,7 +15,7 @@ import java.util.*;
 public class BagImplementation<T> implements USet<T> {
 
     List<Entry> bag;
-
+    List<T> s;
     class Entry implements Map.Entry<T, Integer> {
         T k;
         Integer v;
@@ -56,20 +56,25 @@ public class BagImplementation<T> implements USet<T> {
         return n;
     }
 
-
     @Override
     public boolean add(T x) {
-        Entry y = findEntry(x);
-        // If value isn't found in set add new entry
-        if(Objects.isNull(y)){
-            Entry newEntry = new Entry(x, 1);
-            bag.add(newEntry);
-        } else{
-
-        }
-        // else increment value of entry
-        return s.find(x);
+        return false;
     }
+
+
+//    @Override
+//    public boolean add(T x) {
+//        Entry y = findEntry(x);
+//        // If value isn't found in set add new entry
+//        if(Objects.isNull(y)){
+//            Entry newEntry = new Entry(x, 1);
+//            bag.add(newEntry);
+//        } else{
+//
+//        }
+//        // else increment value of entry
+//        return tru
+//    }
 
     @Override
     public T remove(T x) {
